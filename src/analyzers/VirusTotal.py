@@ -2,7 +2,8 @@ import json
 import time
 from pip._vendor import requests
 
-from src.Utils.FileHelper import FileHelper
+from src.utils.Constants import Constants
+from src.utils.FileHelper import FileHelper
 from src.analyzers.IAnalyzer import IAnalyzer
 
 
@@ -28,7 +29,7 @@ class VirusTotal(IAnalyzer):
         self.file_name = fh.getFileName(self.file_path)
         params = {'apikey': self.api_key}
         files = {'file': (self.file_name, fh.openFile(self.file_path))}
-        response = requests.post('https://www.virustotal.com/vtapi/v2/file/scan', files=files, params=params)
+        response = requests.post(Constants.VIRUSTOTAL_SENDING_URL, files=files, params=params)
         try:
             self.scan_id = self.handleScanResponse(response)
         except Exception as error:
@@ -42,15 +43,13 @@ class VirusTotal(IAnalyzer):
         }
         while True:
             print("[*] Request Rapport (scan id = " + self.scan_id + ")")
-            response = requests.get('https://www.virustotal.com/vtapi/v2/file/report',
+            response = requests.get(Constants.VIRUSTOTAL_REPORT_URL,
                                     params=params, headers=headers)
             response_content = self.handleReportResponse(response)
-            if response_content != 0:
+            if response_content != -1:
                 print("[!] Rapport received ")
-                break
+                return response_content
             time.sleep(30)
-        print(response_content)
-        #Parse results
 
     def handleScanResponse(self, response):
         json_data = response.json()
@@ -59,11 +58,16 @@ class VirusTotal(IAnalyzer):
         else:
             return json_data['scan_id']
 
+    #Return -1 if the report is not available
+    #Else return the positive number
     def handleReportResponse(self, response):
         json_data = response.json()
         if json_data['response_code'] != 1:
-            return 0
+            return -1
         else:
-            return json_data
+            if json_data['positives'] != 0:
+                return (self.name, True)
+            else:
+                return (self.name, False)
 
 

@@ -2,6 +2,7 @@ import getopt
 import sys
 
 from src.analyzers.VirusTotal import VirusTotal
+from src.reports.ShortReport import ShortReport
 
 
 def main():
@@ -25,9 +26,13 @@ def main():
         sys.exit(2)
 
     analyzer = VirusTotal()
-    setup_params = ('86cfb1aa15979e6f0a97725fe3c56e03b94ed32800a2bfd080c6b72dae6e37da', file_path)
+    report = ShortReport()
+    setup_params = ('', file_path)
     analyzer.setup(setup_params)
-    analyzer.analyze()
+    response_tuple = analyzer.analyze()
+    response_dict = dict([response_tuple])
+    report.generate(response_dict)
+
 
 
 
