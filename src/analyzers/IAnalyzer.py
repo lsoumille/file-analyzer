@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 class IAnalyzer(ABC):
@@ -8,5 +8,5 @@ class IAnalyzer(ABC):
         return NotImplemented
 
     @abstractmethod
-    def analyze(self, file):
+    def analyze(self):
         return NotImplemented

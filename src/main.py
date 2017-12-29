@@ -1,6 +1,8 @@
 import getopt
 import sys
 
+from src.analyzers.VirusTotal import VirusTotal
+
 
 def main():
     file_path = ""
@@ -21,6 +23,11 @@ def main():
     if not file_path:
         print("File is needed")
         sys.exit(2)
+
+    analyzer = VirusTotal()
+    setup_params = ('86cfb1aa15979e6f0a97725fe3c56e03b94ed32800a2bfd080c6b72dae6e37da', file_path)
+    analyzer.setup(setup_params)
+    analyzer.analyze()
 
 
 
