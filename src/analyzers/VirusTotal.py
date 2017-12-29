@@ -35,7 +35,9 @@ class VirusTotal(IAnalyzer):
         except Exception as error:
             print("Error when uploading file to virus total platform : " + repr(error))
         print("[*] File upload to Virus Total (scan id = " + self.scan_id + ")")
-        #Retrieve scan result
+
+    def report(self, level):
+        # Retrieve scan result
         params = {'apikey': self.api_key, 'resource': self.scan_id}
         headers = {
             "Accept-Encoding": "gzip, deflate",
@@ -45,7 +47,7 @@ class VirusTotal(IAnalyzer):
             print("[*] Request Rapport (scan id = " + self.scan_id + ")")
             response = requests.get(Constants.VIRUSTOTAL_REPORT_URL,
                                     params=params, headers=headers)
-            response_content = self.handleReportResponse(response)
+            response_content = self.handleReportResponse(response, level)
             if response_content != -1:
                 print("[!] Rapport received ")
                 return response_content
@@ -60,14 +62,27 @@ class VirusTotal(IAnalyzer):
 
     #Return -1 if the report is not available
     #Else return the positive number
-    def handleReportResponse(self, response):
+    def handleReportResponse(self, response, level):
         json_data = response.json()
         if json_data['response_code'] != 1:
             return -1
+        elif level == Constants.SHORT_REPORTING:
+            return self.createShortReport(json_data)
+        elif level == Constants.MEDIUM_REPORTING:
+            return self.createMediumReport(json_data)
         else:
-            if json_data['positives'] != 0:
-                return (self.name, True)
-            else:
-                return (self.name, False)
+            return self.createComprehensiveReport(json_data)
+
+    def createShortReport(self, json_data):
+        if json_data['positives'] != 0:
+            return (self.name, True)
+        else:
+            return (self.name, False)
+
+    def createMediumReport(self, json_data):
+        print("Medium Report")
+
+    def createComprehensiveReport(self, json_data):
+        print("Comprehensive Report")
 
 

@@ -4,3 +4,7 @@ class Constants:
     VIRUSTOTAL_REPORT_URL = "https://www.virustotal.com/vtapi/v2/file/report"
 
     COMMON_CLEAN_MESSAGE = "[*] Scan terminated, nothing evil was detected"
+
+    SHORT_REPORTING = 0
+    MEDIUM_REPORTING = 1
+    COMPREHENSIVE_REPORTING = 2

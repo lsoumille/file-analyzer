@@ -10,3 +10,7 @@ class IAnalyzer(ABC):
     @abstractmethod
     def analyze(self):
         return NotImplemented
+
+    @abstractmethod
+    def report(self, level):
+        return NotImplemented
