@@ -5,6 +5,8 @@ class Constants:
 
     COMMON_CLEAN_MESSAGE = "[*] Scan terminated, nothing evil was detected"
 
+    CONFIG_PATH = "config.yml"
+
     SHORT_REPORTING = 0
     MEDIUM_REPORTING = 1
     COMPREHENSIVE_REPORTING = 2

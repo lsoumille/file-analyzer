@@ -1,5 +1,9 @@
 from os.path import basename
 
+import yaml
+
+from src.utils.Constants import Constants
+
 
 class FileHelper:
 
@@ -8,3 +12,6 @@ class FileHelper:
 
     def getFileName(self, path):
         return basename(path)
+
+    def getConfigFile():
+        return yaml.load(open(Constants.CONFIG_PATH, 'r'))

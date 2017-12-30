@@ -37,6 +37,8 @@ class VirusTotal(IAnalyzer):
         print("[*] File upload to Virus Total (scan id = " + self.scan_id + ")")
 
     def report(self, level):
+        if not self.scan_id:
+            return (self.name, '')
         # Retrieve scan result
         params = {'apikey': self.api_key, 'resource': self.scan_id}
         headers = {

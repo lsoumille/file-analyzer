@@ -2,10 +2,10 @@ import getopt
 import sys
 
 from src.analyzers.AGenerator import AGenerator
-from src.analyzers.VirusTotal import VirusTotal
 from src.reports.RGenerator import RGenerator
-from src.reports.ShortReport import ShortReport
+from src.utils.ConfigHelper import ConfigHelper
 from src.utils.Constants import Constants
+from src.utils.FileHelper import FileHelper
 
 
 def main():
@@ -40,7 +40,8 @@ def main():
         sys.exit(2)
 
     #Setup params
-    setup_params = ('', file_path)
+    config_content = FileHelper.getConfigFile()
+    setup_params = (ConfigHelper.getVirusTotalAPIKey(config_content), file_path)
     #Apply analyzers
     analyze_results = []
     for a in analyzers:
@@ -50,17 +51,5 @@ def main():
 
     #Generate results
     reports.generate(analyze_results)
-
-    ###DEBUG###
-    #analyzer = VirusTotal()
-    #report = ShortReport()
-    #setup_params = ('', file_path)
-    #analyzer.setup(setup_params)
-    #response_tuple = analyzer.analyze()
-    #response_dict = dict([response_tuple])
-    #report.generate(response_dict)
-
-
-
 
 if  __name__ =='__main__':main()
