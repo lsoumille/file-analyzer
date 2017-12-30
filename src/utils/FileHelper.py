@@ -13,5 +13,6 @@ class FileHelper:
     def getFileName(self, path):
         return basename(path)
 
+    @staticmethod
     def getConfigFile():
         return yaml.load(open(Constants.CONFIG_PATH, 'r'))

@@ -82,7 +82,10 @@ class VirusTotal(IAnalyzer):
             return (self.name, False)
 
     def createMediumReport(self, json_data):
-        print("Medium Report")
+        if json_data['positives'] != 0:
+            return (self.name, True)
+        else:
+            return (self.name, False)
 
     def createComprehensiveReport(self, json_data):
         print("Comprehensive Report")

@@ -17,7 +17,7 @@ def main():
     reports = RGenerator.getShortReport()
     reporting_level = Constants.SHORT_REPORTING
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hfao", ["help", "all", "file=", "output"])
+        opts, args = getopt.getopt(sys.argv[1:], "hfao", ["help", "all", "file=", "output="])
     except getopt.GetoptError:
         #usage()
         sys.exit(2)
@@ -30,7 +30,11 @@ def main():
         elif opt in ("-a," "--all"):
             analyzers = AGenerator.getAllAnalyzers()
         elif opt in ("-o", "--output"):
-            print("TMP")
+            if arg == "medium":
+                reports = RGenerator.getMediumReport()
+                reporting_level = Constants.MEDIUM_REPORTING
+            else:
+                print("TMP")
             #Handle report argument
         else:
             assert False, "unhandled option"
