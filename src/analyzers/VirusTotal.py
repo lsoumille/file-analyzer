@@ -34,6 +34,7 @@ class VirusTotal(IAnalyzer):
             self.scan_id = self.handleScanResponse(response)
         except Exception as error:
             print("Error when uploading file to virus total platform : " + repr(error))
+            return
         print("[*] File upload to Virus Total (scan id = " + self.scan_id + ")")
 
     def report(self, level):
@@ -56,11 +57,10 @@ class VirusTotal(IAnalyzer):
             time.sleep(30)
 
     def handleScanResponse(self, response):
-        json_data = response.json()
-        if json_data['response_code'] != 1:
-            raise Exception('Bad Response from Virus Total API')
+        if response.status_code != 200 or response.json()['response_code'] != 1:
+            raise Exception('Bad Response from Virus Total API: Check your internet connection or your API Key')
         else:
-            return json_data['scan_id']
+            return response.json()['scan_id']
 
     #Return -1 if the report is not available
     #Else return the positive number
@@ -88,6 +88,17 @@ class VirusTotal(IAnalyzer):
             return (self.name, False)
 
     def createComprehensiveReport(self, json_data):
-        print("Comprehensive Report")
+        content = self.virusTotalResultToStr(json_data)
+        if json_data['positives'] != 0:
+            return (self.name, True, content)
+        else:
+            return (self.name, False, content)
+
+    def virusTotalResultToStr(self, json_data):
+        str_res = "[*] Virus Total report:\n"
+        for scanner in json_data['scans']:
+            str_res += "> " + scanner + " : [ Detected: " + str(json_data['scans'][scanner]['detected']) + " | Result: " + str(json_data['scans'][scanner]['result']) + " ]\n"
+        return str_res + "Virus Total platform detects " + str(json_data['positives']) + " positive results for " + self.file_name + "\n[*] Virus total report end"
+
 
 

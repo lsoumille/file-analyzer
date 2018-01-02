@@ -15,7 +15,7 @@ class ComprehensiveReport(IReport):
                 print("[*] " + tuple[0] + " result not found")
                 continue
             elif tuple[1]:
-                print("[!] " + tuple[0] + " detected malicious content")
+                print("[!] " + tuple[0] + " detected malicious content [!]")
                 is_malicious = True
                 triggered = triggered + 1
             else:
