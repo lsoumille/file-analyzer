@@ -9,7 +9,7 @@ from src.utils.FileHelper import FileHelper
 
 
 def main():
-    #Step 1: Get program arguments
+    #Get program arguments
     file_path = ""
     #By default applies all the analyzer
     analyzers = AGenerator.getAllAnalyzers()
@@ -33,9 +33,12 @@ def main():
             if arg == "medium":
                 reports = RGenerator.getMediumReport()
                 reporting_level = Constants.MEDIUM_REPORTING
+            elif arg == "comprehensive":
+                reports = RGenerator.getComprehensiveReport()
+                reporting_level = Constants.COMPREHENSIVE_REPORTING
             else:
-                print("TMP")
-            #Handle report argument
+                if arg != "short":
+                    assert False, "Error in output argument"
         else:
             assert False, "unhandled option"
 
