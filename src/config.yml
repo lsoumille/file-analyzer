@@ -1,2 +1,5 @@
 virustotal:
   api_key: MyAPIKEY
+
+metadefendercloud:
+  api_key: MyAPIKEY

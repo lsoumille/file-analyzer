@@ -1,7 +1,8 @@
 class Constants:
     VIRUSTOTAL_SENDING_URL = "https://www.virustotal.com/vtapi/v2/file/scan"
-
     VIRUSTOTAL_REPORT_URL = "https://www.virustotal.com/vtapi/v2/file/report"
+
+    METADEFENDER_SENDING_URL = "https://scan.metadefender.com/v2/file"
 
     COMMON_CLEAN_MESSAGE = "[*] Scan terminated, nothing evil was detected"
     COMMON_MALICIOUS_MESSAGE = "### Malicious content detected ###"
