@@ -46,12 +46,12 @@ def main():
         print("File is needed")
         sys.exit(2)
 
-    #Setup params
+    #Open configuration file
     config_content = FileHelper.getConfigFile()
-    setup_params = (ConfigHelper.getVirusTotalAPIKey(config_content), file_path)
     #Apply analyzers
     analyze_results = []
     for a in analyzers:
+        setup_params = a.get_conf(config_content, file_path)
         a.setup(setup_params)
         a.analyze()
         analyze_results.append(a.report(reporting_level))

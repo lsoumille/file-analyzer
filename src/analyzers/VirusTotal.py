@@ -2,6 +2,7 @@ import json
 import time
 from pip._vendor import requests
 
+from src.utils.ConfigHelper import ConfigHelper
 from src.utils.Constants import Constants
 from src.utils.FileHelper import FileHelper
 from src.analyzers.IAnalyzer import IAnalyzer
@@ -15,6 +16,9 @@ class VirusTotal(IAnalyzer):
         self.file_path = ""
         self.file_name = ""
         self.scan_id = ""
+
+    def get_conf(self, conf_file, file_path):
+        return (ConfigHelper.getVirusTotalAPIKey(conf_file), file_path)
 
     def setup(self, tuple):
         if tuple[0]:
