@@ -84,3 +84,25 @@ class MetadefenderCloud(IAnalyzer):
             return (self.name, True)
         else:
             return (self.name, False)
+
+    def createMediumReport(self, response_data):
+        if response_data['scan_results']['total_detected_avs'] != 0:
+            return (self.name, True)
+        else:
+            return (self.name, False)
+
+    def createComprehensiveReport(self, response_data):
+        content = self.metadefenderResultToStr(response_data)
+        if response_data['scan_results']['total_detected_avs'] != 0:
+            return (self.name, True, content)
+        else:
+            return (self.name, False, content)
+
+    def metadefenderResultToStr(self, response_data):
+        str_res = "[*] Metadefender Cloud report:\n"
+        for scanner in response_data['scan_results']['scan_details']:
+            str_res += "> " + scanner + " : [ Detected: " + str(
+                response_data['scan_results']['scan_details'][scanner]['scan_result_i']) + " | Result: " + str(
+                response_data['scan_results']['scan_details'][scanner]['threat_found']) + " ]\n"
+        return str_res + "Metadefender platform detects " + str(
+            response_data['scan_results']['total_detected_avs']) + " positive results for " + self.file_name + "\n[*] Metadefender Cloud report end"
